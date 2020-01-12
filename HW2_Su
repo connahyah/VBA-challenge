@@ -1,0 +1,55 @@
+Sub Alphabetical_Testing()
+    
+Dim WS As Worksheet
+Dim Ticker As String
+Dim Vol As Long
+Dim Year_Open As Double
+Dim Year_Close As Double
+Dim Yearly_Change As Double
+Dim Percent_Change As Double
+Dim Summary_Table_Row As Integer
+For Each WS In ThisWorkbook.Worksheets
+    WS.Cells(1, 9).Value = "Ticker"
+    WS.Cells(1, 10).Value = "Yearly Change"
+    WS.Cells(1, 11).Value = "Percent Change"
+    WS.Cells(1, 12).Value = "Total Stock Volume"
+    Summary_Table_Row = 2
+'Create a script that will loop through all the stocks for one year for each run and take the following information
+    lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+    For i = 2 To lastrow
+        If WS.Cells(i + 1.1).Value <> WS.Cells(i, 1).Value Then
+    'The ticker symbol
+        Ticker = WS.Cells(i, 1).Value
+        WS.Cells(Summary_Table_Row, 9).Value = Ticker
+    'Yearly change from opening price at the beginning of a given year to the closing price at the end of that year.
+        Vol = WS.Cells(i, 7).Value
+        Year_Open = WS.Cells(i, 3).Value
+        Year_Close = WS.Cells(i, 6).Value
+        Yearly_Change = Year_Close - Year_Open
+        WS.Cells(Summary_Table_Row, 10).Value = Yearly_Change
+    'The percentage change from opening price at the beginning of a given year to the closing price at the end of that year.
+        percentage_change = ((Year_Close - Year_Open) / Year_Close) * 100
+        WS.Cells(Summary_Table_Row, 11).Value = Percent_Change
+    'The total stock volume of the stock.
+        WS.Cells(Summary_Table_Row, 12).Value = Vol
+        Summary_Table_Row = Summary_Table_Row + 1
+        Vol = 0
+        End If
+    Next i
+Next WS
+End Sub
+'You should also have the conditional formatting that will higlight positive change in green and negative change in red.
+Sub Highlight()
+
+Dim i As Integer
+
+Columns(1).Font.Color = vbBlack
+For i = 1 To lastrow
+
+    If Cells(i, 10).Value < 0 Then x.Interior.Color = vbRed
+    If Cells(i, 10).Value >= 0 Then x.Interior.Color = vbGreen
+    
+Next i
+    
+End Sub
+
